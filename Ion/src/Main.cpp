@@ -1,4 +1,5 @@
 #include <iostream>
+#include "Point.h"
 
 int main()
 {
@@ -31,6 +32,8 @@ int main()
 	
 	std::clog << "\rDone.                 \n";
 	std::cin.get();
+
+	RTM::Point p(2.0f, 2.0f, 2.0f);
 
 	return 0;
 
