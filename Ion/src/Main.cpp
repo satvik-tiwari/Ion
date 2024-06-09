@@ -14,6 +14,7 @@ int main()
 	//writing pixels in rows from bottom left to top right
 	for (int j = 0; j < image_height; j++)
 	{
+		std::clog << "\rScanlines remaining: " << (image_height - j) << ' ' << std::flush;
 		for (int i = 0; i < image_width; i++)
 		{
 			double r = double(i) / (image_width - 1);
@@ -27,7 +28,8 @@ int main()
 			std::cout << ir << ' ' << ig << ' ' << ib << std::endl;
 		}
 	}
-
+	
+	std::clog << "\rDone.                 \n";
 	std::cin.get();
 
 	return 0;
