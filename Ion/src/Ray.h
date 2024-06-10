@@ -19,6 +19,7 @@ public:
 	inline const RTM::Vec3& GetDirection() const;
 
 	RTM::Point3 At(double t) const;
+
 };
 
 #endif // !Ray_H

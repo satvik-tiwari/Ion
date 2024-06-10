@@ -9,3 +9,8 @@ RTM::Point3::Point3(double e0, double e1, double e2)
 	: Vec3(e0, e1, e2)
 {
 }
+
+RTM::Point3::Point3(const Vec3& vector)
+	: Vec3(vector)
+{
+}
