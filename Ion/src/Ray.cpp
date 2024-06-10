@@ -23,5 +23,6 @@ inline const RTM::Vec3& Ray::GetDirection() const
 
 RTM::Point3 Ray::At(double t) const
 {
+	//P(t) = a + tb
 	return RTM::Point3((RTM::Vec3)m_Origin + t * m_Direction);
 }
