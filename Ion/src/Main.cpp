@@ -5,23 +5,28 @@
 
 RTM::Color RayColor(const Ray& ray) 
 {
-	return RTM::Color(0, 0, 0);
+	RTM::Vec3 directionNorm = RTM::Normalize(ray.GetDirection());
+	double a = 0.5 * (directionNorm.Y() + 1.0); 
+	// Linear interpolation
+	// blended value =  (1 - a) * startValue + a * EndValue 
+	 auto var = (1.0 - a) * RTM::Color(1.0, 1.0, 1.0);
+	return (1.0 - a) * RTM::Color(1.0, 1.0, 1.0) + a * RTM::Color(0.5, 0.7, 1.0);
 }
 
 int main()
 {
-	//image
+	//-------------------------image-----------------------------------------
 
 
-	//predetermining aspect ratio and image width
+	// predetermining aspect ratio and image width
 	double aspectRatio = 16.0 / 9.0;
 	int imageWidth = 400;
 
-	//calulating image height and making sure its atleast 1
+	// calulating image height and making sure its atleast 1
 	int imageHeight = int(imageWidth / aspectRatio);
 	imageHeight = imageHeight < 1 ? 1 : imageHeight;
 
-	//camera
+	//-------------------------Camera--------------------------------------
 
 	struct Viewport
 	{
@@ -36,7 +41,7 @@ int main()
 	viewport.height * (double(imageWidth) / imageHeight);
 	RTM::Point3 cameraCenter = RTM::Point3(0, 0, 0);
 
-	//calculate vectors across horizontal and vertical edges of the viewport
+	// calculate vectors across horizontal and vertical edges of the viewport
 
 	
 	viewport.u = RTM::Vec3(viewport.width, 0, 0);
@@ -46,28 +51,44 @@ int main()
 	{
 		RTM::Vec3 delta_u, delta_v;
 	};
-
+	
+	// calculate the horizontal and vertical delta vectors from pixel to pixel
 	Pixel pixel;
 	pixel.delta_u = viewport.u / imageWidth;
 	pixel.delta_v = viewport.v / imageHeight;
 
-	//calculate the location of the upper left pixel
+	// calculate the location of the upper left pixel
 
-	viewport.upperLeft = cameraCenter - RTM::Vec3(0, 0, focalLength) - viewport.u/2 - viewport.v/2;
-	auto pixelLoc00 = viewport.upperLeft + 0.5f * (pixel.delta_u + pixel.delta_v);
-	//render
+	// subtracting focal length moves us from camera center to viewport center as focal length
+	// is pointing to viewport in -z axis
+	// subtracting half of viewport width moves us from center of viewport to left edge
+	// subtracting half of viewport height moves us from center of viewport to top edge
+	viewport.upperLeft = cameraCenter - RTM::Vec3(0, 0, focalLength) - viewport.u/2 - viewport.v/2; //upper left corner of the viewport
+
+	//to ensure the ray is passing thru the center of the pixel, we half delta_u and delat_v
+	RTM::Vec3 pixelLoc00 = viewport.upperLeft + 0.5f * (pixel.delta_u + pixel.delta_v);
+
+
+	//-------------------------render-------------------------------------------
 
 	std::cout << "P3\n" << imageWidth << ' ' << imageHeight << "\n255\n";
 
-	//writing pixels in rows from bottom left to top right
+	// writing pixels in rows from bottom left to top right
 	for (int j = 0; j < imageHeight; j++)
 	{
 		std::clog << "\rScanlines remaining: " << (imageHeight - j) << ' ' << std::flush;
 		for (int i = 0; i < imageWidth; i++)
 		{
-			RTM::Color pixelColor = RTM::Color(double(i) / (imageWidth - 1),
-				double(j) / (imageHeight), 0);
+		
+			RTM::Vec3 pixelCenter = pixelLoc00 + (i * pixel.delta_u) + (j * pixel.delta_v);
+			RTM::Vec3 rayDirection = pixelCenter - cameraCenter; // not normailizing direction because we would have to calculate
+															     // square root
+																 // and use divsion operation every time and that can be
+																 // computationally expensive.
 
+			Ray ray(cameraCenter, rayDirection);
+
+			RTM::Color pixelColor = RayColor(ray);
 			pixelColor.WriteColor(std::cout, pixelColor);
 		}
 	}
