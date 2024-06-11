@@ -2,15 +2,27 @@
 #include "Point3.h"
 #include "Color.h"
 #include "Ray.h"
+#include <cassert>
 
 RTM::Color RayColor(const Ray& ray) 
 {
 	RTM::Vec3 directionNorm = RTM::Normalize(ray.GetDirection());
+	//assert(directionNorm.Y() >= -1.0 && directionNorm.Y() <= 1.0);
+	//std::cout << "Norm Y : " << directionNorm.Y() << std::endl;
+	
 	double a = 0.5 * (directionNorm.Y() + 1.0); 
+	//std::cout << "a : " << a << std::endl;
+	
 	// Linear interpolation
 	// blended value =  (1 - a) * startValue + a * EndValue 
-	//auto var = (1.0 - a) * RTM::Color(1.0, 1.0, 1.0) + a * RTM::Color(0.5, 0.7, 1.0);
-	return (1.0 - a) * RTM::Color(1.0, 1.0, 1.0) + a * RTM::Color(0.5, 0.7, 1.0);
+	auto var1 = ((1.0 - a) * RTM::Color(1.0, 1.0, 1.0));
+	auto var2 = (a * RTM::Color(0.5, 0.7, 1.0));
+
+	auto var = var1 + var2;
+	//std::cout << "Pixel Color : " << var << std::endl;
+	assert(var.X() >= 0.0 && var.X() <= 1.0);
+	
+	return var;
 }
 
 int main()

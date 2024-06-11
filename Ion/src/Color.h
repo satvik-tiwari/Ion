@@ -20,7 +20,7 @@ namespace RTM
 
 	inline const Color& operator*(const Color& color, double value)
 	{
-		
+		auto var = color.X() * value;// , color.Y()* value, color.Z()* value;
 		return Color(color.X() * value, color.Y() * value, color.Z() * value);
 	}
 

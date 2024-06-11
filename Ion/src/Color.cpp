@@ -22,10 +22,13 @@ void RTM::Color::WriteColor(std::ostream& out, const RTM::Color& pixel_color)
 	double g = pixel_color.Y();
 	double b = pixel_color.Z();
 
+	
 	//map rgb values from 0-1 to 0-255
 	int rbyte = int(r * 255.999);
 	int gbyte = int(g * 255.999);
 	int bbyte = int(b * 255.999);
+	//auto var = rbyte > 256;
+	//static_assert(, "range exceeded");
 
 	//write out the pixel color componenets
 	out << rbyte << ' ' << gbyte << ' ' << bbyte << '\n';
