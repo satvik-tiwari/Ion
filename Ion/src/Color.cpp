@@ -10,7 +10,13 @@ RTM::Color::Color(double e0, double e1, double e2)
 {
 }
 
-void RTM::Color::WriteColor(std::ostream& out, const Color& pixel_color)
+RTM::Color::Color(const Vec3& vector)
+	: Vec3(vector)
+{
+}
+
+
+void RTM::Color::WriteColor(std::ostream& out, const RTM::Color& pixel_color)
 {
 	double r = pixel_color.X();
 	double g = pixel_color.Y();

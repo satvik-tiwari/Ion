@@ -9,7 +9,7 @@ RTM::Color RayColor(const Ray& ray)
 	double a = 0.5 * (directionNorm.Y() + 1.0); 
 	// Linear interpolation
 	// blended value =  (1 - a) * startValue + a * EndValue 
-	 auto var = (1.0 - a) * RTM::Color(1.0, 1.0, 1.0);
+	//auto var = (1.0 - a) * RTM::Color(1.0, 1.0, 1.0) + a * RTM::Color(0.5, 0.7, 1.0);
 	return (1.0 - a) * RTM::Color(1.0, 1.0, 1.0) + a * RTM::Color(0.5, 0.7, 1.0);
 }
 
@@ -38,7 +38,7 @@ int main()
 	Viewport viewport;
 	double focalLength = 1.0;
     viewport.height = 2.0;
-	viewport.height * (double(imageWidth) / imageHeight);
+	viewport.width = viewport.height * (double(imageWidth) / imageHeight);
 	RTM::Point3 cameraCenter = RTM::Point3(0, 0, 0);
 
 	// calculate vectors across horizontal and vertical edges of the viewport
@@ -89,14 +89,13 @@ int main()
 			Ray ray(cameraCenter, rayDirection);
 
 			RTM::Color pixelColor = RayColor(ray);
-			pixelColor.WriteColor(std::cout, pixelColor);
+			RTM::Color::WriteColor(std::cout, pixelColor);
 		}
 	}
 	
 	std::clog << "\rDone.                 \n";
 	std::cin.get();
 
-	RTM::Point3 p(2.0f, 2.0f, 2.0f);
 
 	return 0;
 
