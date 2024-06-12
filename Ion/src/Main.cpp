@@ -6,9 +6,15 @@
 
 bool HitSphere(const RTM::Vec3& center, double radius, Ray r)
 {
+	//vector from origin of ray to center of sphere
 	RTM::Vec3 oc = center - r.GetOrigin();
+
+	// ax^2 + bx + c = 0
+	// calcualte a, b, c using quadratic eqation formula
+	// if b^2 - 4ac >= 0, it means real roots exist
+	// hence intersection has occured
 	double a = RTM::Dot(r.GetDirection(), r.GetDirection());
-	double b = -2 * RTM::Dot(r.GetDirection(), oc);
+	double b = -2.0 * RTM::Dot(r.GetDirection(), oc);
 	double c = RTM::Dot(oc, oc) - radius * radius;
 	double discriminant = b * b - 4 * a * c;
 	return discriminant >= 0;
@@ -16,9 +22,14 @@ bool HitSphere(const RTM::Vec3& center, double radius, Ray r)
 
 RTM::Color RayColor(const Ray& ray) 
 {
+	// if ray hits sphere return color red, otherwiese blue gradient
+	if (HitSphere(RTM::Point3(0, 0, -1), 0.5, ray))
+		return RTM::Color(1, 0, 0);
+
+
 	RTM::Vec3 directionNorm = RTM::Normalize(ray.GetDirection());
-	//assert(directionNorm.Y() >= -1.0 && directionNorm.Y() <= 1.0);
-	//std::cout << "Norm Y : " << directionNorm.Y() << std::endl;
+	// assert(directionNorm.Y() >= -1.0 && directionNorm.Y() <= 1.0);
+	// std::cout << "Norm Y : " << directionNorm.Y() << std::endl;
 	
 	double a = 0.5 * (directionNorm.Y() + 1.0); 
 	//std::cout << "a : " << a << std::endl;
@@ -29,7 +40,7 @@ RTM::Color RayColor(const Ray& ray)
 	auto var2 = (a * RTM::Color(0.5, 0.7, 1.0));
 
 	auto var = var1 + var2;
-	//std::cout << "Pixel Color : " << var << std::endl;
+	// std::cout << "Pixel Color : " << var << std::endl;
 	assert(var.X() >= 0.0 && var.X() <= 1.0);
 	
 	return var;
