@@ -4,7 +4,7 @@
 #include "Ray.h"
 #include <cassert>
 
-bool HitSphere(const RTM::Vec3& center, double radius, Ray r)
+static double HitSphere(const RTM::Vec3& center, double radius, const Ray& r)
 {
 	//vector from origin of ray to center of sphere
 	RTM::Vec3 oc = center - r.GetOrigin();
@@ -17,15 +17,24 @@ bool HitSphere(const RTM::Vec3& center, double radius, Ray r)
 	double b = -2.0 * RTM::Dot(r.GetDirection(), oc);
 	double c = RTM::Dot(oc, oc) - radius * radius;
 	double discriminant = b * b - 4 * a * c;
-	return discriminant >= 0;
+	
+	// if < 0 return -1
+	if (discriminant < 0)
+		return -1;
+	// return the closest intersection point t, i.e, smallest root
+	else
+		return (-b - sqrt(discriminant)) / (2.0 * a);
 }
 
-RTM::Color RayColor(const Ray& ray) 
+static RTM::Color RayColor(const Ray& ray) 
 {
-	// if ray hits sphere return color red, otherwiese blue gradient
-	if (HitSphere(RTM::Point3(0, 0, -1), 0.5, ray))
-		return RTM::Color(1, 0, 0);
-
+	// if ray hits sphere return color based on noraml at the hit point, otherwiese blue gradient
+	double t = HitSphere(RTM::Point3(0, 0, -1), 0.5, ray);
+	if (t >= 0.0)
+	{
+		RTM::Vec3 normal = RTM::Normalize(ray.At(t) - RTM::Vec3(0, 0, -1));
+		return 0.5 * RTM::Color(normal.X() + 1.0, normal.Y() + 1.0, normal.Z() + 1.0); // maping normal from -1,1 to 0, 1
+	}
 
 	RTM::Vec3 directionNorm = RTM::Normalize(ray.GetDirection());
 	// assert(directionNorm.Y() >= -1.0 && directionNorm.Y() <= 1.0);
