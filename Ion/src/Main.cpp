@@ -4,6 +4,16 @@
 #include "Ray.h"
 #include <cassert>
 
+bool HitSphere(const RTM::Vec3& center, double radius, Ray r)
+{
+	RTM::Vec3 oc = center - r.GetOrigin();
+	double a = RTM::Dot(r.GetDirection(), r.GetDirection());
+	double b = -2 * RTM::Dot(r.GetDirection(), oc);
+	double c = RTM::Dot(oc, oc) - radius * radius;
+	double discriminant = b * b - 4 * a * c;
+	return discriminant >= 0;
+}
+
 RTM::Color RayColor(const Ray& ray) 
 {
 	RTM::Vec3 directionNorm = RTM::Normalize(ray.GetDirection());
