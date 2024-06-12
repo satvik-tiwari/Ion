@@ -13,17 +13,17 @@ static double HitSphere(const RTM::Vec3& center, double radius, const Ray& r)
 	// calcualte a, b, c using quadratic eqation formula
 	// if b^2 - 4ac >= 0, it means real roots exist
 	// hence intersection has occured
-	double a = RTM::Dot(r.GetDirection(), r.GetDirection());
-	double b = -2.0 * RTM::Dot(r.GetDirection(), oc);
-	double c = RTM::Dot(oc, oc) - radius * radius;
-	double discriminant = b * b - 4 * a * c;
+	double a = r.GetDirection().LengthSquared();
+	double h = RTM::Dot(r.GetDirection(), oc);
+	double c = oc.LengthSquared() - radius * radius;
+	double discriminant = h * h - a * c;
 	
 	// if < 0 return -1
 	if (discriminant < 0)
 		return -1;
 	// return the closest intersection point t, i.e, smallest root
 	else
-		return (-b - sqrt(discriminant)) / (2.0 * a);
+		return (h - sqrt(discriminant)) / a;
 }
 
 static RTM::Color RayColor(const Ray& ray) 
