@@ -158,6 +158,7 @@
     <ClInclude Include="src\HittableList.h" />
     <ClInclude Include="src\Point3.h" />
     <ClInclude Include="src\Ray.h" />
+    <ClInclude Include="src\RTCore.h" />
     <ClInclude Include="src\Sphere.h" />
     <ClInclude Include="src\Vec3.h" />
   </ItemGroup>

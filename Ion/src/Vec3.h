@@ -3,11 +3,6 @@
 #ifndef Vec3_H
 #define Vec3_H
 
-#include <cmath>
-#include <iostream>
-
-using std::sqrt;
-
 namespace RTM //raytracing maths library
 {
 	class Vec3

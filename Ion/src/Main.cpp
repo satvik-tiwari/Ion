@@ -1,39 +1,24 @@
-#include <iostream>
-#include "Point3.h"
-#include "Color.h"
-#include "Ray.h"
 #include <cassert>
 
-static double HitSphere(const RTM::Vec3& center, double radius, const Ray& r)
-{
-	//vector from origin of ray to center of sphere
-	RTM::Vec3 oc = center - r.GetOrigin();
+#include "RTCore.h"
+#include "Hittable.h"
+#include "HittableList.h"
+#include "Sphere.h"
 
-	// ax^2 + bx + c = 0
-	// calcualte a, b, c using quadratic eqation formula
-	// if b^2 - 4ac >= 0, it means real roots exist
-	// hence intersection has occured
-	double a = r.GetDirection().LengthSquared();
-	double h = RTM::Dot(r.GetDirection(), oc);
-	double c = oc.LengthSquared() - radius * radius;
-	double discriminant = h * h - a * c;
-	
-	// if < 0 return -1
-	if (discriminant < 0)
-		return -1;
-	// return the closest intersection point t, i.e, smallest root
-	else
-		return (h - sqrt(discriminant)) / a;
-}
-
-static RTM::Color RayColor(const Ray& ray) 
+static RTM::Color RayColor(const Ray& ray, const Hittable& world) 
 {
-	// if ray hits sphere return color based on noraml at the hit point, otherwiese blue gradient
-	double t = HitSphere(RTM::Point3(0, 0, -1), 0.5, ray);
-	if (t >= 0.0)
+	//// if ray hits sphere return color based on noraml at the hit point, otherwiese blue gradient
+	//double t = HitSphere(RTM::Point3(0, 0, -1), 0.5, ray);
+	//if (t >= 0.0)
+	//{
+	//	RTM::Vec3 normal = RTM::Normalize(ray.At(t) - RTM::Vec3(0, 0, -1));
+	//	return 0.5 * RTM::Color(normal.X() + 1.0, normal.Y() + 1.0, normal.Z() + 1.0); // maping normal from -1,1 to 0, 1
+	//}
+
+	HitRecord rec;
+	if (world.Hit(r, 0, RT_INFINITY, rec))
 	{
-		RTM::Vec3 normal = RTM::Normalize(ray.At(t) - RTM::Vec3(0, 0, -1));
-		return 0.5 * RTM::Color(normal.X() + 1.0, normal.Y() + 1.0, normal.Z() + 1.0); // maping normal from -1,1 to 0, 1
+		return 0.5 * (rec.m_Normal + RTM::Color(1, 1, 1));
 	}
 
 	RTM::Vec3 directionNorm = RTM::Normalize(ray.GetDirection());
@@ -67,6 +52,12 @@ int main()
 	// calulating image height and making sure its atleast 1
 	int imageHeight = int(imageWidth / aspectRatio);
 	imageHeight = imageHeight < 1 ? 1 : imageHeight;
+
+	//--------------------------World-----------------------------------------
+
+	HittableList world;
+	world.Add(std::make_shared<Sphere>(RTM::Point3(0, 0, -1), 0.5));
+	world.Add(std::make_shared<Sphere>(RTM::Point3(0, -100.5, -1), 100));
 
 	//-------------------------Camera--------------------------------------
 
@@ -130,7 +121,7 @@ int main()
 
 			Ray ray(cameraCenter, rayDirection);
 
-			RTM::Color pixelColor = RayColor(ray);
+			RTM::Color pixelColor = RayColor(ray, world);
 			RTM::Color::WriteColor(std::cout, pixelColor);
 		}
 	}

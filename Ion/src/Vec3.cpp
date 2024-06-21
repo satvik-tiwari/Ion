@@ -75,7 +75,7 @@ namespace RTM
 
 	double Vec3::Length() const
 	{
-		return sqrt(LengthSquared());
+		return std::sqrt(LengthSquared());
 	}
 
 	double Vec3::LengthSquared() const

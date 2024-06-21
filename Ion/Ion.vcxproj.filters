@@ -62,6 +62,9 @@
     <ClInclude Include="src\HittableList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\RTCore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Vec3.inl">

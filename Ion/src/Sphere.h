@@ -4,7 +4,6 @@
 #define Sphere_H
 
 #include "Hittable.h"
-#include "Vec3.h"
 
 class Sphere : public Hittable
 {

@@ -1,7 +1,9 @@
-#include "Vec3.h"
+//#include "Vec3.h"
 
 //Vec3(vector) class utility functions
 //seperate file for inline functions
+
+//#include <iostream>bc
 namespace RTM
 {
 
