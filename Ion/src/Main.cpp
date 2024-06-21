@@ -5,7 +5,7 @@
 #include "HittableList.h"
 #include "Sphere.h"
 
-static RTM::Color RayColor(const Ray& ray, const Hittable& world) 
+static RTM::Color RayColor(const Ray& ray, const HittableList& world) 
 {
 	//// if ray hits sphere return color based on noraml at the hit point, otherwiese blue gradient
 	//double t = HitSphere(RTM::Point3(0, 0, -1), 0.5, ray);
