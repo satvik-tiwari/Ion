@@ -40,6 +40,8 @@ bool Sphere::Hit(const Ray& r, double rayTmin, double rayTmax, HitRecord& rec) c
 	rec.m_T = root;
 	rec.m_Point = r.At(rec.m_T); // find the point of intersection using parameteric eqn
 								// P(t) = Q + td
+
+	// normailizing normal
 	RTM::Vec3 outwardNormal = (rec.m_Point - m_Center) / m_Radius; // to normailze nomal for sphere, 
 														// we can just divide by radius
 														// thus, avoiding square root
