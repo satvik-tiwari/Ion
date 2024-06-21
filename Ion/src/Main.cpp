@@ -16,9 +16,9 @@ static RTM::Color RayColor(const Ray& ray, const Hittable& world)
 	//}
 
 	HitRecord rec;
-	if (world.Hit(r, 0, RT_INFINITY, rec))
+	if (world.Hit(ray, 0, RT_INFINITY, rec))
 	{
-		return 0.5 * (rec.m_Normal + RTM::Color(1, 1, 1));
+		return 0.5 * RTM::Color(rec.m_Normal.X() + 1.0, rec.m_Normal.Y() + 1.0, rec.m_Normal.Z() + 1.0);
 	}
 
 	RTM::Vec3 directionNorm = RTM::Normalize(ray.GetDirection());

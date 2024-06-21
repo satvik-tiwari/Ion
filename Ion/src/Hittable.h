@@ -3,6 +3,8 @@
 #ifndef Hittable_H
 #define Hittable_H
 
+#include "RTCore.h"
+
 // recording the attributes of the hit attributes of the object
 class HitRecord
 {

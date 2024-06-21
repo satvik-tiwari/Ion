@@ -21,10 +21,10 @@ inline double DegreesToRadians(double degrees)
 }
 
 // common headers
+
+#include "Vec3.h"
 #include "Color.h"
 #include "Point3.h"
 #include "Ray.h"
-#include "Vec3.h"
-
 
 #endif // !RTCore_H

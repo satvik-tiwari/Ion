@@ -3,6 +3,8 @@
 #ifndef Vec3_H
 #define Vec3_H
 
+#include <iostream>
+
 namespace RTM //raytracing maths library
 {
 	class Vec3
