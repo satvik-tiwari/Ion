@@ -5,21 +5,17 @@
 #include "HittableList.h"
 #include "Sphere.h"
 
-static RTM::Color RayColor(const Ray& ray, const HittableList& world) 
+static RTM::Color RayColor(const Ray& ray, const Hittable& world) 
 {
-	//// if ray hits sphere return color based on noraml at the hit point, otherwiese blue gradient
-	//double t = HitSphere(RTM::Point3(0, 0, -1), 0.5, ray);
-	//if (t >= 0.0)
-	//{
-	//	RTM::Vec3 normal = RTM::Normalize(ray.At(t) - RTM::Vec3(0, 0, -1));
-	//	return 0.5 * RTM::Color(normal.X() + 1.0, normal.Y() + 1.0, normal.Z() + 1.0); // maping normal from -1,1 to 0, 1
-	//}
-
+	// pass a ray through all objects in the world,
+	// record the closest intersection attrib
+	// just draw for that particluar object at that point
+	// if ray hits sphere return color based on noraml at the hit point, otherwiese blue gradient
 	HitRecord rec;
 	if (world.Hit(ray, 0, RT_INFINITY, rec))
 	{
 		//std::cout << rec.m_Normal << std::endl;
-		return 0.5 * RTM::Color(rec.m_Normal.X() + 1.0, rec.m_Normal.Y() + 1.0, rec.m_Normal.Z() + 1.0);
+		return 0.5 * (RTM::Color(rec.m_Normal) + RTM::Color(1, 1, 1));  // maping normal from -1,1 to 0, 1
 	}
 
 	RTM::Vec3 directionNorm = RTM::Normalize(ray.GetDirection());
