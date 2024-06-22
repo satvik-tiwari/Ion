@@ -31,7 +31,7 @@ bool HittableList::Hit(const Ray& r, double ray_tmin, double ray_tmax, HitRecord
 		{
 			hitAnything = true;
 			closestSoFar = tempRec.m_T; // tempRec is updated as we passed its ref in the abve Hit() call
-			rec = tempRec;
+			tempRec = rec;
 		}
 	}
 

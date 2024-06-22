@@ -18,7 +18,7 @@ static RTM::Color RayColor(const Ray& ray, const HittableList& world)
 	HitRecord rec;
 	if (world.Hit(ray, 0, RT_INFINITY, rec))
 	{
-		std::cout << rec.m_Normal << std::endl;
+		//std::cout << rec.m_Normal << std::endl;
 		return 0.5 * RTM::Color(rec.m_Normal.X() + 1.0, rec.m_Normal.Y() + 1.0, rec.m_Normal.Z() + 1.0);
 	}
 
@@ -123,7 +123,7 @@ int main()
 			Ray ray(cameraCenter, rayDirection);
 
 			RTM::Color pixelColor = RayColor(ray, world);
-			//RTM::Color::WriteColor(std::cout, pixelColor);
+			RTM::Color::WriteColor(std::cout, pixelColor);
 		}
 	}
 	
